@@ -8,3 +8,12 @@ This is the backend project for Blog Application. The sole purpose of this proje
 - User should be able to login to our application.
 - Post can include pictures too.
 ---
+## Roadmap
+- [ ] Proper API building for Posts, Comments, Login, Register.
+- [ ] Pagination and Sorting in Posts API.
+- [ ] User Input Validation.
+- [ ] Exception Handling.
+- [ ] Role-Based Authentication(Security).
+- [ ] JWT based Authentication.
+- [ ] Documentation of all APIs using Swagger.
+- [ ] Deploy the backend application on any cloud platform.
