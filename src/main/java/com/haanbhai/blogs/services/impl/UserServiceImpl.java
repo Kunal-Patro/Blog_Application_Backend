@@ -1,12 +1,14 @@
 package com.haanbhai.blogs.services.impl;
 
 import com.haanbhai.blogs.entities.User;
+import com.haanbhai.blogs.exceptions.ResourceNotFoundException;
 import com.haanbhai.blogs.payloads.UserDTO;
 import com.haanbhai.blogs.repositiories.UserRepo;
 import com.haanbhai.blogs.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -19,23 +21,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateUser(UserDTO user, Integer usedId) {
-        return null;
+    public UserDTO updateUser(UserDTO userDTO, Integer usedId) {
+        User user = this.userRepo.findById(usedId).orElseThrow(()-> new ResourceNotFoundException("User"," Id ", usedId));
+        user.setName(userDTO.getName());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        user.setAbout(userDTO.getAbout());
+        User updatedUser = this.userRepo.save(user);
+        return this.userToUserDTO(updatedUser);
     }
 
     @Override
     public UserDTO getUserById(Integer usedId) {
-        return null;
+        User user = this.userRepo.findById(usedId).orElseThrow(() -> new ResourceNotFoundException("User"," Id ", usedId));
+        return this.userToUserDTO(user);
     }
 
     @Override
     public List<UserDTO> getAllUsers() {
-        return null;
+        List<User> users = this.userRepo.findAll();
+        List<UserDTO> usersDTO = users.stream().map(user -> this.userToUserDTO(user)).collect(Collectors.toList());
+        return usersDTO;
     }
 
     @Override
     public void deleteUser(Integer userId) {
-
+        User user = this.userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User", " Id ", userId));
+        this.userRepo.delete(user);
     }
 
     private User dtoToUser(UserDTO userDto)
