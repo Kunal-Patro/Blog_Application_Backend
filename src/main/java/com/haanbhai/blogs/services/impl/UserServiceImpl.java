@@ -5,6 +5,7 @@ import com.haanbhai.blogs.exceptions.ResourceNotFoundException;
 import com.haanbhai.blogs.payloads.UserDTO;
 import com.haanbhai.blogs.repositiories.UserRepo;
 import com.haanbhai.blogs.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private ModelMapper modelMapper;
     @Override
     public UserDTO createUser(UserDTO userDTO) {
         User user = this.dtoToUser(userDTO);
@@ -53,24 +56,17 @@ public class UserServiceImpl implements UserService {
 
     private User dtoToUser(UserDTO userDto)
     {
-        User user = new User();
-        user.setId(userDto.getId());
-        user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
-        user.setAbout(userDto.getAbout());
-        user.setActive(userDto.isActive());
+        User user = this.modelMapper.map(userDto,User.class);
+//        user.setId(userDto.getId());
+//        user.setName(userDto.getName());
+//        user.setEmail(userDto.getEmail());
+//        user.setPassword(userDto.getPassword());
+//        user.setAbout(userDto.getAbout());
+//        user.setActive(userDto.isActive());
         return user;
     }
     private UserDTO userToUserDTO(User user)
     {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setName(user.getName());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setPassword(user.getPassword());
-        userDTO.setAbout(user.getAbout());
-        userDTO.setActive(user.isActive());
-        return userDTO;
+        return this.modelMapper.map(user,UserDTO.class);
     }
 }
