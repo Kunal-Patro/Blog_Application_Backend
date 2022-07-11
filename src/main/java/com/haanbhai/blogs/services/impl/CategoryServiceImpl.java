@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
@@ -33,16 +34,20 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Integer categoryId) {
-
+        Category cat = this.categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category"," category Id",categoryId));
+        this.categoryRepo.delete(cat);
     }
 
     @Override
     public CategoryDTO getCategory(Integer categoryId) {
-        return null;
+        Category cat = this.categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category"," category Id", categoryId));
+        return this.modelMapper.map(cat,CategoryDTO.class);
     }
 
     @Override
-    public List<CategoryDTO> getAllCategory() {
-        return null;
+    public List<CategoryDTO> getAllCategories() {
+        List<Category> cats = this.categoryRepo.findAll();
+        List<CategoryDTO> catsDTO = cats.stream().map(cat-> this.modelMapper.map(cat,CategoryDTO.class)).collect(Collectors.toList());
+        return catsDTO;
     }
 }

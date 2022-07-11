@@ -9,5 +9,5 @@ public interface CategoryService {
     CategoryDTO updateCategory(CategoryDTO categoryDTO, Integer categoryId);
     void deleteCategory(Integer categoryId);
     CategoryDTO getCategory(Integer categoryId);
-    List<CategoryDTO> getAllCategory();
+    List<CategoryDTO> getAllCategories();
 }
