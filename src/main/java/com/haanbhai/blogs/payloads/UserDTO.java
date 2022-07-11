@@ -18,7 +18,7 @@ public class UserDTO {
     @NotEmpty
     @Size(min = 4, message = "Username should of min 4 characters")
     private String name;
-    @Email(message = "Email address not valid")
+    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Email address not valid")
     private String email;
     @NotEmpty
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{4,10}$", message = "Password must have length between 4 to 10, atleast one letter and one number")
