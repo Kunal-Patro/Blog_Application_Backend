@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="users")
@@ -22,4 +24,6 @@ public class User {
     private String password;
     private String about;
     private boolean isActive;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Post> posts = new HashSet<>();
 }

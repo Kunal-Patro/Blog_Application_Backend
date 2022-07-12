@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "categories")
@@ -19,4 +21,6 @@ public class Category {
     private String categoryTitle;
     @Column(name = "description")
     private String categoryDescription;
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    private Set<Post> posts = new HashSet<>();
 }
