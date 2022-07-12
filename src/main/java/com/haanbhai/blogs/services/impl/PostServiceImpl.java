@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class PostServiceImpl implements PostService {
     @Autowired
@@ -51,17 +53,28 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDTO getPostById(Integer postId) {
-        return null;
+        Post post = this.postRepo.findById(postId).orElseThrow(()-> new ResourceNotFoundException("Post"," post Id ",postId));
+        return this.modelMapper.map(post,PostDTO.class);
+    }
+
+    @Override
+    public List<PostDTO> getAllPosts() {
+        List<PostDTO> postDTOs = this.postRepo.findAll().stream().map(post -> this.modelMapper.map(post,PostDTO.class)).collect(Collectors.toList());
+        return postDTOs;
     }
 
     @Override
     public List<PostDTO> getPostsByCategory(Integer categoryId) {
-        return null;
+        Category cat = this.categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category"," category Id ",categoryId));
+        List<PostDTO> postsDTO = this.postRepo.findByCategory(cat).stream().map(post -> this.modelMapper.map(post,PostDTO.class)).collect(Collectors.toList());
+        return postsDTO;
     }
 
     @Override
     public List<PostDTO> getPostsByUser(Integer userId) {
-        return null;
+        User user = this.userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User"," user Id ",userId));
+        List<PostDTO> postsDTO = this.postRepo.findByUser(user).stream().map(post -> this.modelMapper.map(post,PostDTO.class)).collect(Collectors.toList());
+        return postsDTO;
     }
 
     @Override

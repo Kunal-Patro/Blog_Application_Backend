@@ -10,6 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class PostDTO {
+    private Integer postId;
     private String postTitle;
     private String content;
     private String imageName;
