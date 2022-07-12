@@ -1,5 +1,6 @@
 package com.haanbhai.blogs.controllers;
 
+import com.haanbhai.blogs.payloads.ApiResponse;
 import com.haanbhai.blogs.payloads.PostDTO;
 import com.haanbhai.blogs.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @RestController
@@ -44,5 +46,17 @@ public class PostController {
     {
         List<PostDTO> postDTOs = this.postService.getAllPosts();
         return new ResponseEntity<List<PostDTO>>(postDTOs, HttpStatus.OK);
+    }
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<ApiResponse> deletePost(@PathVariable Integer postId)
+    {
+        this.postService.deletePost(postId);
+        return new ResponseEntity<ApiResponse>(new ApiResponse("Post id successfully deleted!!",true),HttpStatus.OK);
+    }
+    @PutMapping("/{postId}")
+    public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO postDTO, @PathVariable Integer postId)
+    {
+        PostDTO updatedPostDTO = this.postService.updatePost(postDTO,postId);
+        return new ResponseEntity<PostDTO>(updatedPostDTO,HttpStatus.OK);
     }
 }
