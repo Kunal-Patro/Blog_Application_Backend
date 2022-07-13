@@ -11,7 +11,7 @@ public interface PostService {
     PostDTO updatePost(PostDTO postDTO, Integer postId);
     void deletePost(Integer postId);
     PostDTO getPostById(Integer postId);
-    PostResponse getAllPosts(Integer pageNumber, Integer pageSize);
+    PostResponse getAllPosts(Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
     List<PostDTO> getPostsByCategory(Integer categoryId);
     List<PostDTO> getPostsByUser(Integer userId);
 
