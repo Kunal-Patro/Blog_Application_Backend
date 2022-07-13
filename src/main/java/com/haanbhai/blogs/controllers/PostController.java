@@ -42,9 +42,10 @@ public class PostController {
         return new ResponseEntity<PostDTO>(foundPostDTO, HttpStatus.OK);
     }
     @GetMapping("/")
-    public ResponseEntity<List<PostDTO>> getAllPosts()
+    public ResponseEntity<List<PostDTO>> getAllPosts(@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+                                                     @RequestParam(value = "pageSize", defaultValue = "5", required = false)Integer pageSize)
     {
-        List<PostDTO> postDTOs = this.postService.getAllPosts();
+        List<PostDTO> postDTOs = this.postService.getAllPosts(pageNumber,pageSize);
         return new ResponseEntity<List<PostDTO>>(postDTOs, HttpStatus.OK);
     }
     @DeleteMapping("/{postId}")
