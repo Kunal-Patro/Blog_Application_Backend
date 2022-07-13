@@ -2,6 +2,7 @@ package com.haanbhai.blogs.controllers;
 
 import com.haanbhai.blogs.payloads.ApiResponse;
 import com.haanbhai.blogs.payloads.PostDTO;
+import com.haanbhai.blogs.payloads.PostResponse;
 import com.haanbhai.blogs.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,11 +43,11 @@ public class PostController {
         return new ResponseEntity<PostDTO>(foundPostDTO, HttpStatus.OK);
     }
     @GetMapping("/")
-    public ResponseEntity<List<PostDTO>> getAllPosts(@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
-                                                     @RequestParam(value = "pageSize", defaultValue = "5", required = false)Integer pageSize)
+    public ResponseEntity<PostResponse> getAllPosts(@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+                                                    @RequestParam(value = "pageSize", defaultValue = "5", required = false)Integer pageSize)
     {
-        List<PostDTO> postDTOs = this.postService.getAllPosts(pageNumber,pageSize);
-        return new ResponseEntity<List<PostDTO>>(postDTOs, HttpStatus.OK);
+        PostResponse postResponse = this.postService.getAllPosts(pageNumber,pageSize);
+        return new ResponseEntity<PostResponse>(postResponse, HttpStatus.OK);
     }
     @DeleteMapping("/{postId}")
     public ResponseEntity<ApiResponse> deletePost(@PathVariable Integer postId)

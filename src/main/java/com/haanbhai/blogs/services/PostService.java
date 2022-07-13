@@ -2,6 +2,7 @@ package com.haanbhai.blogs.services;
 
 import com.haanbhai.blogs.entities.Post;
 import com.haanbhai.blogs.payloads.PostDTO;
+import com.haanbhai.blogs.payloads.PostResponse;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface PostService {
     PostDTO updatePost(PostDTO postDTO, Integer postId);
     void deletePost(Integer postId);
     PostDTO getPostById(Integer postId);
-    List<PostDTO> getAllPosts(Integer pageNumber, Integer pageSize);
+    PostResponse getAllPosts(Integer pageNumber, Integer pageSize);
     List<PostDTO> getPostsByCategory(Integer categoryId);
     List<PostDTO> getPostsByUser(Integer userId);
 
