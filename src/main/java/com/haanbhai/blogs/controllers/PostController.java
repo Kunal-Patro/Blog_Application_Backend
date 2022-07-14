@@ -9,11 +9,16 @@ import com.haanbhai.blogs.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -84,5 +89,12 @@ public class PostController {
         postDTO.setImageName(fileName);
         PostDTO updatedPost = this.postService.updatePost(postDTO,postId);
         return new ResponseEntity<PostDTO>(updatedPost,HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/image/{postId}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public void getImage(@PathVariable Integer postId, HttpServletResponse response) throws IOException {
+        PostDTO postDTO = this.postService.getPostById(postId);
+        InputStream resource = this.fileService.getResource(path,postDTO.getImageName());
+        StreamUtils.copy(resource,response.getOutputStream());
     }
 }
