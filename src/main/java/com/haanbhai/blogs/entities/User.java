@@ -15,7 +15,7 @@ import java.util.Set;
 @Setter
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false, length = 100)
     private String name;
@@ -26,4 +26,6 @@ public class User {
     private boolean isActive;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Post> posts = new HashSet<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Comment> comments = new HashSet<>();
 }
