@@ -1,5 +1,6 @@
 package com.haanbhai.blogs.controllers;
 
+import com.haanbhai.blogs.exceptions.ApiException;
 import com.haanbhai.blogs.payloads.JwtAuthRequest;
 import com.haanbhai.blogs.payloads.JwtAuthResponse;
 import com.haanbhai.blogs.security.JwtTokenHelper;
@@ -26,7 +27,7 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @PostMapping("/login")
-    public ResponseEntity<JwtAuthResponse> createToken(@RequestBody JwtAuthRequest request) throws Exception {
+    public ResponseEntity<JwtAuthResponse> createToken(@RequestBody JwtAuthRequest request) throws ApiException {
         this.authenticate(request.getUsername(), request.getPassword());
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getUsername());
         String token = this.jwtTokenHelper.generateToken(userDetails);
@@ -35,13 +36,13 @@ public class AuthController {
         return new ResponseEntity<JwtAuthResponse>(response, HttpStatus.OK);
     }
 
-    private void authenticate(String username, String password) throws Exception {
+    private void authenticate(String username, String password) throws ApiException {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,password);
         try {
             this.authenticationManager.authenticate(authenticationToken);
         }catch(BadCredentialsException e){
             System.out.println("Invalid Details");
-            throw new Exception("Invalid username or password");
+            throw new ApiException("Invalid username or password");
         }
     }
 }
