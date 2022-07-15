@@ -27,7 +27,7 @@ public class JwtTokenHelper {
         return claimsResolver.apply(claims);
     }
     private Claims getAllClaimsFromToken(String token){
-        return Jwts.parser().setSigningKey(secret).parseClaimsJwt(token).getBody();
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
     private Boolean isTokenExpired(String token)
     {
@@ -41,7 +41,7 @@ public class JwtTokenHelper {
     }
     public String doGenerateToken(Map<String, Object> claims, String subject){
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000)).signWith(SignatureAlgorithm.ES512,secret).compact();
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000)).signWith(SignatureAlgorithm.HS512,secret).compact();
     }
     public Boolean validateToken(String token, UserDetails userDetails){
         final String username = getUserNameFormToken(token);
